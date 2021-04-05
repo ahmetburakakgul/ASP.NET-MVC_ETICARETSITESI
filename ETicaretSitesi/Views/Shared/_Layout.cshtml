@@ -1,0 +1,119 @@
+﻿@{ 
+    ETicaretSitesi.Models.CodeFirstVT.Members logonuser = (ETicaretSitesi.Models.CodeFirstVT.Members)Session["LogonUser"];//Controller içinde seesina ulaşamadığım için yaptım.
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>E-Ticaret</title>
+    <!-- CSS Styles -->
+
+
+    <link href="~/Template/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="~/Template/node_modules\font-awesome\css\font-awesome.min.css">
+    <link rel="stylesheet" href="~/Template/Content\site.css">
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Bree+Serif" rel="stylesheet">
+    <!-- Javascripts -->
+    <script src="~/Template/node_modules\jquery\dist\jquery.min.js"></script>
+    <script src="~/Template/node_modules\bootstrap\dist\js\bootstrap.min.js"></script>
+</head>
+<body>
+    <!-- navbar begin -->
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a class="navbar-brand" href="@Url.Action("index","Home",new { id=0 })">Anasayfa</a>
+        <button class="navbar-toggler hidden-lg-up" type="button" data-toggle="collapse" data-target="#collapsibleNavId" aria-controls="collapsibleNavId"
+                aria-expanded="false" aria-label="Menü"></button>
+        <div class="collapse navbar-collapse" id="collapsibleNavId">
+            @Html.Partial("_MenuTopCategory", (List<ETicaretSitesi.Models.CodeFirstVT.Category>)ViewBag.MenuCategories)
+            <ul class="navbar-nav navbar-right">
+                @if (logonuser == null)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Hesap/Register">
+                            <span class="fa fa-user-plus mr-2"></span>Kayıt Ol
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Hesap/Login">
+                            <span class="fa fa-sign-in mr-2"></span>Giriş
+                        </a>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="ddlProfile" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="fa fa-user mr-2"></span>@($"{logonuser.Adı} {logonuser.Soyadı}")
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="ddlProfile">
+                            <a class="dropdown-item" href="~/Hesap/Profil">Profil Görüntüle</a>                           
+                            <a class="dropdown-item" href="~/Home/Buy">Siparişlerim</a>
+                        </div>
+                    </li>
+                }
+                @{
+                    List<ETicaretSitesi.Models.HomeModel.BasketModels> basket = (List<ETicaretSitesi.Models.HomeModel.BasketModels>)Session["Basket"];
+                    if (basket == null)
+                    {
+                        basket = new List<ETicaretSitesi.Models.HomeModel.BasketModels>();
+                    }
+                }
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="ddlCart" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="fa fa-shopping-cart mr-2"></span>Sepetim
+                        <span class="badge badge-secondary badge-pill">@basket.Count</span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="ddlCart">
+
+                        @foreach (ETicaretSitesi.Models.HomeModel.BasketModels item in basket)
+                        {
+                            <a class="dropdown-item" href="~/Home/Product/@item.Product.Id">@item.Product.UrunAdi (@item.Count)</a>
+                        }
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="~/Home/Basket">Sepete Git</a>
+                    </div>
+                </li>
+                @if (logonuser != null)
+                {
+                    @Html.Action("RenderMessage","Mesaj")                    
+                    <li class="nav-item">
+                        <a class="nav-link" href="~/Hesap/Logout">
+                            <span class="fa fa-sign-out mr-2"></span>Çıkış
+                        </a>
+                    </li>
+                }
+
+            </ul>
+        </div>
+    </nav>
+    <!-- navbar end -->
+    @RenderBody()
+
+    <div class="card card-default text-center ">
+        <div class="card-body">
+            <div>
+                <a href="#" class="btn text-primary">
+                    <span class="fa fa-twitter fa-2x"></span>
+                </a>
+                <a href="#" class="btn text-danger">
+                    <span class="fa fa-instagram fa-2x"></span>
+                </a>
+                <a href="#" class="btn text-primary">
+                    <span class="fa fa-facebook fa-2x"></span>
+                </a>
+                <p>Tüm Hakları Saklıdır &copy; 2020</p>
+            </div>
+            <a href="mailto:abc@mail.com" class="btn btn-info btn-sm">
+                <span class="fa fa-at mr-2"></span>E-Posta Gönder
+            </a>
+        </div>
+    </div>
+
+    <!-- footer end -->
+</body>
+</html>

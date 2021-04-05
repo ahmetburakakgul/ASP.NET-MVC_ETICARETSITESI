@@ -1,0 +1,67 @@
+﻿@model ETicaretSitesi.Models.Mesaj.MessageRepliesModel
+
+@{
+    ViewBag.Title = "Mesaj Cevapları";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var CurrentUser = (ETicaretSitesi.Models.CodeFirstVT.Members)Session["LogonUser"];
+    var classMe = "col-md-9 col-md-push-1 col-md-offset-1 well well-empty";
+    var classYou = "col-md-10 col-md-offset-1 well";
+}
+
+<div class="container">
+    <div class="row mt-4 mb-2">
+        <div class="col-md-12">
+            <h3 class="text-danger">Konu : @Model.MReplies.FirstOrDefault().Message.Konu</h3>
+        </div>
+    </div>
+    <div class="row">
+        @foreach (var msj in Model.MReplies)
+        {
+
+            <div class="@(msj.Member_Id==CurrentUser.Id?classMe:classYou)">
+
+                <div class="card bg-default my-4">
+                    <div class="card-header">
+                        <a href="~/Hesap/Profil/@msj.Members.Id"><small class="text-muted">Kimden : @(string.Format("{0} {1} ({2})", msj.Members.Adı, msj.Members.Soyadı, msj.Members.MemberType.ToString()))</small></a>
+                    </div>
+                    <div class="card-body">
+                        <p>
+                            @msj.Text
+                        </p>
+                    </div>
+                    <div class="card-footer text-right">
+                        <small class="text-muted">
+                            Tarih : @msj.OlusturmaTarihi.ToString("dd.MM.yyyy hh:mm")
+                        </small>
+                    </div>
+                </div>
+
+            </div>
+
+        }
+    </div>
+
+    @using (Html.BeginForm())
+    {
+        <div class="row my-2">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <h4>Cevabınız</h4>
+                    <hr>
+                </div>
+                @Html.Hidden("Message_Id", Model.MReplies.FirstOrDefault().Message.Id)
+                <div class="form-group">
+                    @Html.TextArea("Text", new { placeholder = "Message Text", @class = "form-control" })
+                </div>
+
+                <div class="form-group text-right">
+                    <button type="submit" class="btn btn-success">
+                        <span class="fa fa-send mr-2"></span>Gönder
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<!-- content end -->

@@ -1,0 +1,51 @@
+﻿@model ETicaretSitesi.Models.HomeModel.CommentsModel
+@{ 
+    string defaultImage = "http://placehold.it/64x64";
+}
+<div class="row my-2">
+    <div class="col-md-12">
+        <div class="form-group">
+            <h3>Yorumlar</h3>
+            <hr>
+        </div>
+
+        <div class="form-group">
+            @foreach (var item in Model.Comments.OrderBy(x => x.OlusturmaTarihi).ToList())
+            {
+                <div class="media my-2">
+                    <a href="~/Hesap/Profil/@item.Members.Id" class="mr-3">
+                        <img src="@Url.Content((string.IsNullOrEmpty(item.Members.ProfilResmi)?defaultImage:item.Members.ProfilResmi))" class="rounded-circle img-thumbnail" style="width:64px">
+                    </a>
+                    <div class="media-body">
+                        <h5>@($"{item.Members.Adı} {item.Members.Soyadı}")</h5>
+                        @item.Text
+                    </div>
+                </div>
+            }
+
+        </div>
+        @if (Session["Logonuser"] != null)
+        {
+            using (Html.BeginForm("Product","Home",FormMethod.Post))
+            {
+                @Html.Hidden("Product_Id", Model.Product.Id)
+                <div class="form-group">
+                    <small style="color:red">@ViewBag.MyError</small>
+                    <textarea cols="30" rows="3" id="Text" name="Text" class="form-control" placeholder="Yorumunuzu Giriniz" maxlength="255"></textarea>
+                </div>
+
+                <div class="form-group text-right">
+                    <button type="submit" class="btn btn-success">
+                        <span class="fa fa-send mr-2"></span> Gönder
+                    </button>
+                </div>
+            }
+
+        }
+        else
+        {
+
+        }
+
+    </div>
+</div>

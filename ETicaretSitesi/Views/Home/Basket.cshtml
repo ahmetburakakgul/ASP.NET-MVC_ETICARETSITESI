@@ -1,0 +1,108 @@
+﻿@model List<ETicaretSitesi.Models.HomeModel.BasketModels>
+@{
+    ViewBag.Title = "Sepet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+<div class="container">
+
+    <!-- content begin -->
+    <div class="row mt-4">
+        <div class="col-md-12 my-4">
+            <h2>Sepetim</h2>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <small style="color:red">@TempData["MyError"]</small>
+            @using (Html.BeginForm("Buy", "Home"))
+            {
+                <table class="table table-striped table-hover text-center table-sm">
+                    <thead>
+                        <tr>
+                            <th>Ürün Adı</th>
+                            <th>Birim Fiyatı</th>
+                            <th>Adedi</th>
+                            <th>Ara Toplam</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (ETicaretSitesi.Models.HomeModel.BasketModels item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    @item.Product.UrunAdi
+                                </td>
+                                <td>
+                                    @item.Product.Fiyat ₺
+                                </td>
+                                <td>
+                                    @item.Count
+                                </td>
+                                <td>
+                                    @(item.Product.Fiyat * item.Count)
+                                </td>
+                                <td>
+                                    <a href="~/Home/AddBasket/@item.Product.Id" class="btn btn-warning btn-sm">
+                                        <span class="fa fa-plus"></span>
+                                    </a>
+                                    <a href="~/Home/AddBasket/@item.Product.Id?remove=true" class="btn btn-info btn-sm mr-4">
+                                        <span class="fa fa-minus"></span>
+                                    </a>
+
+                                    <a class="btn btn-info btn-sm" href="~/Home/Product/@item.Product.Id">
+                                        <span class="fa fa-eye"></span>
+                                    </a>
+                                    <a href="~/Home/RemoveBasket/@item.Product.Id" class="btn btn-danger btn-sm">
+                                        <span class="fa fa-trash"></span>
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+
+
+                    </tbody>
+                    <tfoot>
+                        @if (ViewBag.CurrentAdres != null && ((List<SelectListItem>)ViewBag.CurrentAdres) != null)
+                        {
+                            <tr>
+                                <td colspan="2">@Html.Label("AdresId", "Adres Seçin")</td>
+                                <td colspan="4">
+                                    @Html.DropDownList("Adres", (List<SelectListItem>)ViewBag.CurrentAdres, new { @class = "form-control" })
+                                </td>
+                            </tr>
+                        }
+
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td class="text-center text-danger">
+                                <h2>@ViewBag.TotalPrice ₺</h2>
+                            </td>
+                            <td colspan="2" class="text-right">
+                                <a href="~/Home/RemoveBasket/0" class="btn btn-danger mr-4">
+                                    <span class="fa fa-trash mr-2"></span>Sepeti Boşalt
+                                </a>
+                                <button  type="submit"  class="btn btn-success">
+                                    <span class="fa fa-send mr-2"></span>Satın Al
+                                </button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            }
+
+        </div>
+    </div>
+
+
+
+    <!-- content end -->
+</div>
+
+
+
+

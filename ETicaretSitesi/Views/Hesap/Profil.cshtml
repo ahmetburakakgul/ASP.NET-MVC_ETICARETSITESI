@@ -1,0 +1,157 @@
+﻿@model ETicaretSitesi.Models.Hesap.ProfilModels
+
+@{
+    ViewBag.Title = string.Format("{0} {1}", Model.Members.Adı, Model.Members.Soyadı);
+    Model.Members.ProfilResmi = string.IsNullOrEmpty(Model.Members.ProfilResmi) ? "~/images/uploads/port-100-user.jpg" : Model.Members.ProfilResmi;
+    var currentUser = (ETicaretSitesi.Models.CodeFirstVT.Members)Session["LogonUser"];
+}
+
+<div class="container">
+    <!-- content begin -->
+    <div class="row mt-4">
+        <div class="col-md-12 my-4">
+            <h2>Profil Sayfası</h2>
+            <hr>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-4 text-center">
+            <img src="@Url.Content(String.Format(Model.Members.ProfilResmi))" class="rounded-circle img-fluid img-thumbnail" style="width:250px;height:250px;">
+        </div>
+        <div class="col-md-8">
+            <div class="form-group row">
+                <label class="text-danger col-md-2"> İsim :</label>
+                <label class="col-md-10">@Model.Members.Adı</label>
+            </div>
+
+            <div class="form-group row">
+                <label class="text-danger col-md-2"> Soyad :</label>
+                <label class="col-md-10">@Model.Members.Soyadı</label>
+            </div>
+
+            <div class="form-group row">
+                <label class="text-danger col-md-2"> E-posta :</label>
+                <label class="col-md-10">@Model.Members.Email</label>
+            </div>
+
+            <div class="form-group row">
+                <label class="text-danger col-md-2"> Hakkında :</label>
+                <label class="col-md-10">
+                    @Model.Members.Biografi
+                </label>
+            </div>
+            <div class="form-group row">
+                <label class="text-danger col-md-2"> Kayıt Tarihi :</label>
+                <label class="col-md-10">@Model.Members.OlusturmaTarihi.ToShortDateString()</label>
+            </div>
+        </div>
+    </div>
+    @if (Session["LogonUser"] != null && (currentUser.Id == Model.Members.Id))
+    {
+    <div class="row">
+        <div class="col-md-12 text-right">
+            @if (((int)currentUser.MemberType) > 3)
+            {
+                <a href="~/Galeri/Index" class="btn btn-info">
+                    <span class="fa fa-picture-o"></span> Galeri Editör
+                </a>
+                <a href="~/Category/Index" class="btn btn-dark">
+                    <span class="fa fa-list"></span> Kategoriler
+                </a>
+                <a href="~/Product/Index" class="btn btn-success">
+                    <span class="fa fa-plus"></span> Ürünler
+                </a>
+            }
+            <a href="~/Hesap/ProfilEdit" class="btn btn-warning">
+                <span class="fa fa-edit mr-2"></span>Düzenle
+            </a>
+            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modalDelete">
+                <span class="fa fa-trash mr-2"></span>Sil
+            </a>
+        </div>
+    </div>
+    if (Model.Adres != null)
+    {
+
+    <table class="table table-striped table-hover text-center table-sm">
+        <thead>
+            <tr>
+                <th>Adres Adı</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Adres)
+            {
+                <tr>
+                    <td>@item.Baslik</td>
+                    <td>
+                        <a class="btn btn-info btn-sm" href="~/Hesap/Profil?ad=@item.Id.ToString()">
+                            <span class="fa fa-edit"></span>
+                        </a>
+                        <a href="~/Hesap/RemoveAdres/@item.Id.ToString()" class="btn btn-danger btn-sm">
+                            <span class="fa fa-trash"></span>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    using (Html.BeginForm("Adres", "Hesap"))
+    {
+    @Html.Hidden("Id", Model.CurrentAdres.Id.ToString())
+    <div class="form-group">
+        @Html.TextBox("Baslik", Model.CurrentAdres.Baslik, new { @class = "form-control", placeholder = "Adres Adı" })
+    </div>
+    <div class="form-group">
+        @Html.TextArea("Tanım", Model.CurrentAdres.Tanım, new { @class = "form-control", placeholder = "Adresiniz" })
+    </div>
+    <div class="form-group">
+        <div class="col-sm-12 text-center">
+            <button type="submit" class="btn btn-danger">Kaydet</button>
+        </div>
+    </div>
+    }
+
+
+    }
+    }
+    <!-- content end -->
+</div>
+
+
+
+<div class="modal fade" id="modalDelete" tabindex="-1" role="dialog" aria-labelledby="deleteModalTitle" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="deleteModalTitle">Sil</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4 md-offset-1">
+                        <center>
+                            <span class="fa fa-trash text-danger fa-3x mr-2"></span>
+                        </center>
+                    </div>
+                    <div class="col-md-7 text-center">
+                        <p>Hesabınızı silmek istediğinize emin misiniz?</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">
+                    <span class="fa fa-check mr-2"></span>Hayır
+                </button>
+                <button type="button" class="btn btn-success" data-dismiss="modal">
+                    <span class="fa fa-close mr-2"></span>Evet
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+

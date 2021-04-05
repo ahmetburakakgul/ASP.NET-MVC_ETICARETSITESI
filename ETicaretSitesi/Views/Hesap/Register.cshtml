@@ -1,0 +1,76 @@
+﻿@model  ETicaretSitesi.Models.Hesap.RegisterModels
+@{
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <!-- content begin -->
+    <div class="row my-4">
+        <div class="col-md-4 offset-md-4 my-4">
+            @using (Html.BeginForm())
+            {
+                <div class="card card-default shadow">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h3>
+                                    <span class="fa fa-user-plus fa-2x"></span>
+                                </h3>
+                            </div>
+                            <div class="col-md-9 text-right">
+                                <h2>Kayıt Ol</h2>
+                                @if (ViewBag.ReError != null && string.IsNullOrEmpty((string)ViewBag.ReError) == false)
+                                {
+                                    <small style="color:red">@ViewBag.ReError</small>
+                                }
+                                else
+                                {
+                                    <small>Lütfen e-posta ve şifrenizi giriniz.</small>
+                                }
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group">
+                            @Html.TextBoxFor(model => model.Member.Adı, new { @class = "form-control", placeholder = "Name", type = "text", required = "required" })
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(model => model.Member.Soyadı, new { @class = "form-control", placeholder = "Surname", type = "text", required = "required" })
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(model => model.Member.Email, new { @class = "form-control", placeholder = "e-mail address", type = "email", required = "required" })
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(model => model.Member.Password, new { @class = "form-control", placeholder = "password", type = "password", required = "required" })
+
+                        </div>
+                        <div class="form-group">
+                            @Html.TextBoxFor(model => model.RePasword, new { @class = "form-control", placeholder = "re-password", type = "password", required = "required" })
+
+                        </div>
+                    </div>
+                    <div class="card-footer text-muted text-right">
+                        <a href="@Url.Action("Login","Hesap")" class="btn btn-info">
+                            <span class="fa fa-sign-in mr-2"></span>Giriş
+                        </a>
+                        <button class="btn btn-success" type="submit">
+                            <span class="fa fa-save mr-2"></span>Kayıt
+                        </button>
+                    </div>
+                </div>
+            }
+
+        </div>
+    </div>
+    <!-- content end -->
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+

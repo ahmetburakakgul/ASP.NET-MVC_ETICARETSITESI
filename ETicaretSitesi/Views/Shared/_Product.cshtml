@@ -1,0 +1,45 @@
+﻿@model ETicaretSitesi.Models.CodeFirstVT.Product
+@{
+    if (string.IsNullOrEmpty(Model.UrunResmi))
+    {
+        Model.UrunResmi = "http://placehold.it/300x300";
+    }
+}
+<div class="row mb-2 mt-4">
+    <div class="col-md-4">        
+        <br />
+        <center><img src="~/@Model.UrunResmi"  class="img-responsive img-thumbnail" /></center>
+    </div>
+    <div class="col-md-8">
+        <div class="form-group text-right">
+            <div class="col-md-12">
+                <h2>@Model.UrunAdi</h2>
+            </div>
+            <div class="col-md-12">
+                <h2 class="text-danger">@Model.Fiyat</h2>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <p class="text-justify">
+               @Model.UrunAcıklama
+            </p>
+        </div>
+
+        <div class="form-group">
+            <span class="text-danger mr-4">Derecelendirme : </span>
+            <span class="text-warning">
+                @for (int i = 0; i < Model.YıldızSayısı; i++)
+                {
+                    <span class="fa fa-star"></span>
+                }
+                @for (int i = 0; i < 5-Model.YıldızSayısı; i++)
+                {
+                    <span class="far fa-star-"></span>
+                }          
+                (@Model.YıldızVerenKullanıcı)
+            </span>
+        </div>
+    </div>
+
+</div>

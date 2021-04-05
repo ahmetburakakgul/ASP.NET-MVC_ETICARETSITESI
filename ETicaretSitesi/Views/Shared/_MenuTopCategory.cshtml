@@ -1,0 +1,19 @@
+﻿@model List<ETicaretSitesi.Models.CodeFirstVT.Category>
+<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+    @foreach (var cat in Model)
+    {
+        if (cat.Categories1.Any())
+        {
+    <li class="nav-item dropdown">
+        <a id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="nav-link dropdown-toggle" href="@Url.Action("Index","Home",new { id=cat.Id})">@cat.Adi</a>
+        @_MenuHelper.MenuRecursive(cat.Categories1.ToList())
+        
+    </li>
+        }
+        else
+        {
+            <li class="nav-item"><a href="@Url.Action("Index","Home",new { id=cat.Id})" class="nav-link">@cat.Adi</a></li>
+        }
+
+    }  
+</ul>

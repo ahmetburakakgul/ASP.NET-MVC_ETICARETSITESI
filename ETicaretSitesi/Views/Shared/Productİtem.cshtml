@@ -1,0 +1,23 @@
+﻿@model ETicaretSitesi.Models.CodeFirstVT.Product
+@{ 
+    if (string.IsNullOrEmpty(Model.UrunResmi))
+    {
+        Model.UrunResmi = "images/300x150.png";
+    }   
+}
+<div class="col-md-3 my-2">
+    <div class="card">
+        <img class="card-img-top img-fluid" src="~/@Model.UrunResmi"style="max-height:200px;">
+        <div class="card-body">
+            <h4 class="card-title text-center">
+                <a href="~/Home/Product/@Model.Id">@Model.UrunAdi</a>
+            </h4>           
+            <a href="~/Home/AddBasket/@Model.Id" class="btn btn-success btn-sm">
+                <span class="fa fa-shopping-cart mr-2"></span>Sepete Ekle
+            </a>
+            <button onclick="GetProductInfo(@Model.Id)" class="btn btn-info btn-sm pull-right">
+                    <span class="glyphicon glyphicon-info-sign"></span>&nbsp;Bilgi
+                </button>
+        </div>
+    </div>
+</div>

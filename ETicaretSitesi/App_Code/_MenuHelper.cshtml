@@ -1,0 +1,24 @@
+﻿@helper MenuRecursive(List<ETicaretSitesi.Models.CodeFirstVT.Category> cats)
+{
+   
+<ul aria-labelledby="dropdownMenu1" class="dropdown-menu border-0 shadow">
+    @foreach (var cat in cats)
+    {
+        if (cat.Categories1.Any())
+        {
+            <li class="dropdown-divider"></li>
+            <li class="dropdown-submenu">
+                <a id="dropdownMenu2" href="~/Home/index/@cat.Id" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" class="dropdown-item dropdown-toggle">@cat.Adi</a>
+                @MenuRecursive(cat.Categories1.ToList())
+            </li>
+        }
+        else
+        {
+            <li><a href="~/Home/index/@cat.Id" class="dropdown-item">@cat.Adi </a></li>
+        }
+
+    }
+</ul>
+}
+
+

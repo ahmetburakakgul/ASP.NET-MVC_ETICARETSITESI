@@ -1,0 +1,31 @@
+﻿@model ETicaretSitesi.Models.CodeFirstVT.Galeri
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+
+    @using (Html.BeginForm("Create", "Galeri", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+            <h4>Resim Ekle</h4>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="form-group">
+                @Html.LabelFor(model => model.ResimUrl, htmlAttributes: new { @class = "control-label col-md-1" })
+                <input type="file" name="resim" id="resim" class="form-control" /><br />
+                <span class="glyphicon glyphicon-info-sign">&nbsp;</span>
+                <span><i>Lütfen jpg, jpeg ya da png formatı kullanın.</i></span>
+            </div>
+             <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Kaydet" class="btn btn-default" />
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

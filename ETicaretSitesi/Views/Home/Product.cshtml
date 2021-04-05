@@ -1,0 +1,15 @@
+﻿@model ETicaretSitesi.Models.HomeModel.ProductModels
+
+@{
+    ViewBag.Title = "Product";
+}
+<div class="container">
+
+    @Html.Partial("_Product", Model.Product)
+
+    @Html.Partial("_AddCart", Model.Product)
+
+    @Html.Partial("_Comments", new ETicaretSitesi.Models.HomeModel.CommentsModel() { Comments=Model.Comments,Product=Model.Product})
+
+</div>
+
